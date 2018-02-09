@@ -23,3 +23,20 @@ const _createElement = function(type, className, id, innerHTML) {
   }
   return element;
 };
+
+const xhr = new XMLHttpRequest();
+xhr.addEventListener("load", function() {
+  const data = JSON.parse(this.responseText);
+  console.log(data.data.children);
+  const main = document.getElementById("main");
+  data.data.children.forEach(arr => {
+    const post = document.createElement("div");
+    post.className = "post";
+    const postImg = document.createElement("img");
+    postImg.src = arr.data.url;
+    post.appendChild(postImg);
+    main.appendChild(post);
+  });
+});
+xhr.open("GET", "https://www.reddit.com/r/EarthPorn/.json");
+xhr.send();
