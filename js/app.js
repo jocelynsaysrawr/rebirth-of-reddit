@@ -9,3 +9,17 @@ const _request = function(method, url, callback) {
   oReq.open(method, url);
   oReq.send();
 };
+
+const _createElement = function(type, className, id, innerHTML) {
+  const element = document.createElement(type);
+  if (className) {
+    element.className = className;
+  }
+  if (id) {
+    element.id = id;
+  }
+  if (innerHTML) {
+    element.innerHTML = innerHTML;
+  }
+  return element;
+};
