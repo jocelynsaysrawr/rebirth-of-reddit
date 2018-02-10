@@ -32,9 +32,21 @@ xhr.addEventListener("load", function() {
   data.data.children.forEach(arr => {
     const post = document.createElement("div");
     post.className = "post";
+
     const postImg = document.createElement("img");
     postImg.src = arr.data.url;
     post.appendChild(postImg);
+
+    const postTitle = document.createElement("h3");
+    postTitle.className = "title";
+    postTitle.innerHTML = arr.data.title;
+
+    const postAuthor = document.createElement("h4");
+    postAuthor.className = "author";
+    postAuthor.innerHTML = "By: " + arr.data.author;
+
+    main.appendChild(postTitle);
+    main.appendChild(postAuthor);
     main.appendChild(post);
   });
 });
