@@ -2,10 +2,7 @@ console.log("sanity check");
 
 const _request = function(method, url, callback) {
   const oReq = new XMLHttpRequest();
-  oReq.addEventListener("load", function() {
-    const data = JSON.parse(this.responseText);
-    return callback.bind(this)(data);
-  });
+  oReq.addEventListener("load", callback);
   oReq.open(method, url);
   oReq.send();
 };
@@ -24,79 +21,132 @@ const _createElement = function(type, className, id, innerHTML) {
   return element;
 };
 
-const xhr = new XMLHttpRequest();
-xhr.addEventListener("load", function() {
+function createPost() {
   const data = JSON.parse(this.responseText);
   console.log(data.data.children);
   const main = document.getElementById("main");
-  // data.data.children.forEach(arr => {
-  const children = data.data.children;
-  const post = document.createElement("div");
-  post.className = "post";
+  const post = _createElement("div", "post");
+  const subredditDiv = _createElement("div", "subredditDiv");
+  const imageDiv = _createElement("div", "imageDiv");
+  const titleDiv = _createElement("div", "titleDiv");
+  const statsDiv = _createElement("div", "statsDiv");
+  const commentDiv = _createElement("div", "commentDiv");
+  const child0 = data.data.children[0].data;
 
   const postImg = document.createElement("img");
-  postImg.src = children[0].data.url;
-  post.appendChild(postImg);
+  if (child0.preview) {
+    postImg.src = child0.preview.images[0].source.url;
+  } else {
+    postImg.src = "https://img.fireden.net/a/image/1451/19/1451192610930.png";
+  }
 
-  const postSub = document.createElement("h3");
-  postSub.className = "subreddit";
-  postSub.innerHTML = children[0].data.subreddit_name_prefixed;
+  imageDiv.appendChild(postImg);
 
-  const postTitle = document.createElement("h4");
-  postTitle.className = "title";
-  postTitle.innerHTML = children[0].data.title;
+  const postSub = _createElement(
+    "h2",
+    "subreddit",
+    false,
+    child0.subreddit_name_prefixed
+  );
+  subredditDiv.appendChild(postSub);
 
-  const postAuthor = document.createElement("h4");
-  postAuthor.className = "author";
-  postAuthor.innerHTML = "By: " + children[0].data.author;
+  const postTitle = _createElement("h3", "title", false, child0.title);
+  titleDiv.appendChild(postTitle);
 
-  const postCommentCount = document.createElement("p");
-  postCommentCount.className = "commentCount";
-  postCommentCount.innerHTML = "Comments: " + children[0].data.num_comments;
+  const postAuthor = _createElement(
+    "p",
+    "author",
+    false,
+    "by: " + child0.author
+  );
+  statsDiv.appendChild(postAuthor);
 
-  const postScore = document.createElement("p");
-  postScore.className = "score";
-  postScore.innerHTML = "Score: " + children[0].data.score;
+  const postCommentCount = _createElement(
+    "p",
+    "commentCount",
+    false,
+    "comments: " + child0.num_comments
+  );
+  statsDiv.appendChild(postCommentCount);
 
+  const postScore = _createElement(
+    "p",
+    "score",
+    false,
+    "score: " + child0.score
+  );
+  statsDiv.appendChild(postScore);
+
+  function calculateTimeSincePosted(sec) {
+    const date = new Date(sec * 1000);
+    const today = new Date();
+    const ms = today - date;
+    console.log("today: " + today);
+    console.log("date: " + date);
+    console.log(ms);
+    let s = Math.floor(ms / 1000);
+    let m = Math.floor(s / 60);
+    s = s % 60;
+    let h = Math.floor(m / 60);
+    m = m % 60;
+    const d = Math.floor(h / 24);
+    h = h % 24;
+    return d + "D:" + h + "H:" + m + ":M ago";
+  }
   const postTime = document.createElement("p");
   postTime.className = "time";
-  const date = new Date(children[0].data.created * 1000);
-  const today = new Date();
-  console.log("today: " + (today - date));
-  const ms = today - date;
-  let s = Math.floor(ms / 1000);
-  let m = Math.floor(s / 60);
-  s = s % 60;
-  let h = Math.floor(m / 60);
-  m = m % 60;
-  const d = Math.floor(h / 24);
-  h = h % 24;
-  postScore.innerHTML =
-    "Posted: " + d + " days, " + h + " hrs, " + m + " mins ago";
+  const timeElapsed = calculateTimeSincePosted(child0.created_utc);
+  postTime.innerHTML = "posted: " + timeElapsed;
+  statsDiv.appendChild(postTime);
 
-  main.appendChild(postSub);
   main.appendChild(post);
-  main.appendChild(postCommentCount);
-  main.appendChild(postScore);
-  main.appendChild(postTitle);
-  main.appendChild(postAuthor);
+  post.appendChild(subredditDiv);
+  post.appendChild(imageDiv);
+  post.appendChild(titleDiv);
+  post.appendChild(statsDiv);
+  post.appendChild(commentDiv);
 
-  const xhr2 = new XMLHttpRequest();
-  xhr2.addEventListener("load", function() {
-    const data2 = JSON.parse(this.response);
-    console.log(data2[1].data.children[0].data.body);
-    const postComments = document.createElement("p");
-    postComments.className = "comment";
-    postComments.innerHTML = data2[1].data.children[0].data.body;
-    main.appendChild(postComments);
-  });
-  xhr2.open(
+  const xhr2 = _request(
     "GET",
-    "https://www.reddit.com" + children[0].data.permalink + ".json"
+    "https://www.reddit.com" + child0.permalink + ".json",
+    function() {
+      const data2 = JSON.parse(this.response);
+      const postComments = document.createElement("p");
+      postComments.className = "comment";
+      postComments.innerHTML = data2[1].data.children[0].data.body;
+      commentDiv.appendChild(postComments);
+    }
   );
-  xhr2.send();
 
   // });
-});
-xhr.open("GET", "https://www.reddit.com/r/EarthPorn/.json");
-xhr.send();
+}
+
+const post1 = _request(
+  "GET",
+  "https://www.reddit.com/r/EarthPorn/.json",
+  createPost
+);
+
+const post2 = _request(
+  "GET",
+  "https://www.reddit.com/r/animals/.json",
+  createPost
+);
+
+const post3 = _request(
+  "GET",
+  "https://www.reddit.com/r/pics/.json",
+  createPost
+);
+
+const post4 = _request(
+  "GET",
+  "https://www.reddit.com/r/space/.json",
+  createPost
+);
+
+const post5 = _request(
+  "GET",
+  "https://www.reddit.com/r/todayilearned/.json",
+  createPost
+);
