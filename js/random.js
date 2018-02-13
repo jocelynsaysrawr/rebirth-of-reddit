@@ -24,7 +24,7 @@ const _createElement = function(type, className, id, innerHTML) {
 function createPost() {
   const data = JSON.parse(this.responseText);
   console.log(data.data.children);
-  const main = document.getElementById("main");
+  const mainRandom = document.getElementById("mainRandom");
   const post = _createElement("div", "post");
   const subredditDiv = _createElement("div", "subredditDiv");
   const imageDiv = _createElement("div", "imageDiv");
@@ -99,7 +99,7 @@ function createPost() {
   postTime.innerHTML = "posted: " + timeElapsed;
   statsDiv.appendChild(postTime);
 
-  main.appendChild(post);
+  mainRandom.appendChild(post);
   post.appendChild(subredditDiv);
   post.appendChild(imageDiv);
   post.appendChild(titleDiv);
@@ -117,62 +117,27 @@ function createPost() {
       commentDiv.appendChild(postComments);
     }
   );
-
-  // });
 }
 
-const post1 = _request(
+const randomSubreddits = [
+  "/r/art/.json",
+  "/r/foodporn/.json",
+  "/r/memes/.json",
+  "/r/onepiece/.json",
+  "/r/poetry/.json",
+  "/r/comics/.json",
+  "/r/celebs/.json",
+  "/r/starwars/.json",
+  "/r/facepalm/.json",
+  "/r/surfing/.json",
+  "/r/sports/.json"
+];
+
+let randomNumber = Math.floor(Math.random() * randomSubreddits.length);
+console.log("random: " + randomNumber);
+
+const randomPost = _request(
   "GET",
-  "https://www.reddit.com/r/EarthPorn/.json",
+  "https://www.reddit.com" + randomSubreddits[randomNumber],
   createPost
 );
-
-const post2 = _request(
-  "GET",
-  "https://www.reddit.com/r/animals/.json",
-  createPost
-);
-
-const post3 = _request(
-  "GET",
-  "https://www.reddit.com/r/pics/.json",
-  createPost
-);
-
-const post4 = _request(
-  "GET",
-  "https://www.reddit.com/r/space/.json",
-  createPost
-);
-
-const post5 = _request(
-  "GET",
-  "https://www.reddit.com/r/todayilearned/.json",
-  createPost
-);
-
-const random = document.getElementById("random");
-random.addEventListener("click", randomPost);
-
-function randomPost() {
-  const randomSubreddits = [
-    "/r/art/.json",
-    "/r/foodporn/.json",
-    "/r/memes/.json",
-    "/r/onepiece/.json",
-    "/r/poetry/.json",
-    "/r/comics/.json",
-    "/r/celebs/.json",
-    "/r/starwars/.json",
-    "/r/facepalm/.json",
-    "/r/surfing/.json",
-    "/r/sports/.json"
-  ];
-  let randomNumber = Math.floor(Math.random() * randomSubreddits.length);
-  console.log("random: " + randomNumber);
-  _request(
-    "GET",
-    "https://www.reddit.com" + randomSubreddits[randomNumber],
-    createPost
-  );
-}
