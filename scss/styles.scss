@@ -7,11 +7,135 @@ body {
   color: blueviolet;
 }
 
+#main {
+  display: grid;
+  grid-template-columns: 320px 320px 320px;
+  grid-template-rows: auto;
+  justify-content: space-around;
+  grid-row-gap: 15px;
+  background: #36c;
+  background: linear-gradient(
+        115deg,
+        transparent 75%,
+        rgba(255, 255, 255, 0.8) 75%
+      )
+      0 0,
+    linear-gradient(245deg, transparent 75%, rgba(255, 255, 255, 0.8) 75%) 0 0,
+    linear-gradient(115deg, transparent 75%, rgba(255, 255, 255, 0.8) 75%) 7px -15px,
+    linear-gradient(245deg, transparent 75%, rgba(255, 255, 255, 0.8) 75%) 7px -15px,
+    #36c;
+  background-size: 15px 30px;
+  font-family: "Oswald", sans-serif;
+}
+
+header {
+  display: grid;
+  grid-template-columns: repeat(3, 320px);
+  grid-template-rows: 50px;
+  justify-content: center;
+}
+#headerbg {
+  z-index: -1;
+  justify-content: center;
+  align-self: stretch;
+  margin-right: 50%;
+  margin-left: 50%;
+  grid-column-start: 2;
+}
+#logo {
+  z-index: 1;
+  justify-content: center;
+  align-self: center;
+  margin-right: 50%;
+  margin-left: 50%;
+  grid-column-start: 2;
+}
+
+.post {
+  display: grid;
+  grid-template-columns: 320px;
+  grid-template-rows: 40px 320px 75px 60px 85px;
+}
+
+.subredditDiv {
+  background-color: white;
+  opacity: 0.95;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  align-self: start;
+  h2 {
+    padding-left: 5px;
+    width: auto;
+    margin: 0;
+    align-self: start;
+  }
+}
+
 .imageDiv {
-  height: 400px;
-  width: 400px;
+  background-color: white;
+  margin-top: -15px;
+  padding: 0;
+  height: 320px;
+  width: 320px;
+  display: grid;
+  overflow: hidden;
   img {
-    height: 100%;
+    margin: 0;
+    height: auto;
+    width: 97%;
+    padding-right: 5px;
+    padding-left: 5px;
+    align-self: center;
+  }
+}
+
+.titleDiv {
+  background-color: white;
+  opacity: 0.95;
+  margin-top: -15px;
+  padding: 0;
+  height: 75px;
+  width: 320px;
+  overflow: hidden;
+  .title {
+    padding-right: 5px;
+    padding-left: 5px;
+    margin: 0;
+    height: 75px;
+    width: 320px;
+    overflow: hidden;
+    font-size: 1.5em;
+  }
+}
+
+.statsDiv {
+  background-color: white;
+  opacity: 0.95;
+  margin: 0;
+  margin-top: -15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  display: grid;
+  grid-template-columns: 145px 175px;
+  grid-template-rows: 30px 30px;
+  p {
+    margin: 0;
     width: 100%;
+  }
+}
+
+.commentDiv {
+  background-color: white;
+  opacity: 0.95;
+  margin-top: -15px;
+  overflow: hidden;
+  p {
+    padding-right: 5px;
+    padding-left: 5px;
+    width: auto;
+    margin: 0;
+    align-self: start;
+    overflow: hidden;
   }
 }

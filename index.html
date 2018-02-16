@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link rel="stylesheet" href="./public/css/styles.css">
     <title>New Reddit</title>
 </head>
@@ -13,20 +14,24 @@
     <div id="everything">
         <div id="pageTop">
             <header>
-                <h1>New Reddit</h1>
+                <img src="../assets/logo.svg" alt="fastline" id="logo">
             </header>
             <div class="navigation">
-                <a href="../random.html" id="random">Random</a>
-                <a href="../index.html">My Boards</a>
-                <a href="#getApp">Get The App</a>
+                <button id="random">Random</button>
+                <button id="myBoards">My Boards</button>
+                <button id="getApp">Get The App</button>
             </div>
         </div>
         <div id="main">
 
         </div>
+        <div id="footer">
+
+        </div>
     </div>
 
     <script src="../js/app.js"></script>
+    <script>window.onload = loadMyBoards</script>
 </body>
 
 </html>
